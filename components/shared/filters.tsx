@@ -35,8 +35,10 @@ export const Filters: React.FC<Props> = ({ className }) => {
         </div>
 
         <RangeSlider min={0} max={1000} step={10} value={[0, 1000]} />
+      </div>
 
-        {/* Фільтр інгредієнти */}
+      
+      {/* Фільтр інгредієнти */}
         <CheckBoxFiltersGroup
           title="Інгредієнти"
           className="mt-5"
@@ -92,9 +94,32 @@ export const Filters: React.FC<Props> = ({ className }) => {
               text: "Томати",
               value: "6",
             },
+            {
+              text: "Сирний соус",
+              value: "1",
+            },
+            {
+              text: "Моцарела",
+              value: "2",
+            },
+            {
+              text: "Часник",
+              value: "3",
+            },
+            {
+              text: "Солоні огірки",
+              value: "4",
+            },
+            {
+              text: "Червоний лук",
+              value: "5",
+            },
+            {
+              text: "Томати",
+              value: "6",
+            },
           ]}
         />
-      </div>
     </div>
   );
 };
