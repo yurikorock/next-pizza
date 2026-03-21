@@ -6,6 +6,7 @@ import {
   Title,
   TopBar,
 } from "@/components/shared";
+import { ProductCard } from "@/components/shared/product-card";
 
 import { Button } from "@/components/ui/button";
 
@@ -27,7 +28,9 @@ export default function Home() {
 
           {/* Список товарів */}
           <div className="flex-1">
-            <div className="flex flex-col gap-16">Список товарів</div>
+            <div className="flex flex-col gap-16">
+              <ProductCard id={0} name='SuperPizza' price={500} imageUrl={'https://media.dodostatic.net/image/r:292x292/019a897c5ea574b889475bd98412de7b.avif'}/>
+            </div>
           </div>
         </div>
       </Container>
