@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+
 import { prisma } from "./prisma-client";
 import { hashSync } from "bcrypt";
 
@@ -31,8 +31,8 @@ async function down() {
 
 async function main() {
   try {
-    await up();
     await down();
+    await up();
   } catch (error) {
     console.log(error);
   }
