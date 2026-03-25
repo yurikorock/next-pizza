@@ -28,7 +28,7 @@ export const Header: React.FC<Props> = ({ className }) => {
           </div>
         </Link>
 
-        <div className="mx-10 flex-1"><SearchInput/></div>
+        <div className="mx-10 flex-1 "><SearchInput/></div>
 
         {/* Права частина */}
         <div className="flex items-center gap-2">
