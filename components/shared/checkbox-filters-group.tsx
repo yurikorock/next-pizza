@@ -9,13 +9,13 @@ type Item = FilterChecboxProps;
 interface Props {
   title: string;
   items: Item[];
-  defaultItems: Item[];
+  defaultItems?: Item[];
   limit?: number;
   loading?: boolean;
   searchInputPlaceholder?: string; //пошук по чекбоксам
   onClickCheckbox?: (id: string) => void; //які чекбокси вибрали повертає стан
   defaultValue?: string[]; //які інгредієнти вибрані
-  selectedIds?: Set<string>;
+  selected?: Set<string>;
   className?: string;
   name?: string;
 }
@@ -29,7 +29,7 @@ export const CheckBoxFiltersGroup: React.FC<Props> = ({
   className,
   loading,
   onClickCheckbox,
-  selectedIds,
+  selected,
   defaultValue,
   name,
 }) => {
@@ -59,7 +59,7 @@ export const CheckBoxFiltersGroup: React.FC<Props> = ({
     ? items.filter((item) =>
         item.text.toLowerCase().includes(searchValue.toLowerCase()),
       )
-    : defaultItems.slice(0, limit);
+    : (defaultItems || items).slice(0, limit);
 
   return (
     <div className={className}>
@@ -82,7 +82,7 @@ export const CheckBoxFiltersGroup: React.FC<Props> = ({
             text={item.text}
             value={item.value}
             endAdornment={item.endAdornment}
-            checked={selectedIds?.has(item.value)}
+            checked={selected?.has(item.value)}
             onCheckedChange={() => onClickCheckbox?.(item.value)}
             name={name}
           />
