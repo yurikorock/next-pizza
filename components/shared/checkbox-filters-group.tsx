@@ -13,9 +13,11 @@ interface Props {
   limit?: number;
   loading?: boolean;
   searchInputPlaceholder?: string; //пошук по чекбоксам
-  onChange?: (values: string[]) => void; //які чекбокси вибрали повертає стан
+  onClickCheckbox?: (id: string) => void; //які чекбокси вибрали повертає стан
   defaultValue?: string[]; //які інгредієнти вибрані
+  selectedIds?: Set<string>;
   className?: string;
+  name?: string;
 }
 
 export const CheckBoxFiltersGroup: React.FC<Props> = ({
@@ -26,8 +28,10 @@ export const CheckBoxFiltersGroup: React.FC<Props> = ({
   searchInputPlaceholder = "Пошук...",
   className,
   loading,
-  onChange,
+  onClickCheckbox,
+  selectedIds,
   defaultValue,
+  name,
 }) => {
   const [showAll, setShowAll] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -45,9 +49,8 @@ export const CheckBoxFiltersGroup: React.FC<Props> = ({
           .fill(0)
           .map((_, index) => (
             <Skeleton key={index} className="h-6 mb-4 rounded-[8px]" />
-
           ))}
-          <Skeleton  className="w-28 h-6 mb-4 rounded-[8px]" />
+        <Skeleton className="w-28 h-6 mb-4 rounded-[8px]" />
       </div>
     );
   }
@@ -79,8 +82,9 @@ export const CheckBoxFiltersGroup: React.FC<Props> = ({
             text={item.text}
             value={item.value}
             endAdornment={item.endAdornment}
-            checked={false}
-            onCheckedChange={(ids) => console.log(ids)}
+            checked={selectedIds?.has(item.value)}
+            onCheckedChange={() => onClickCheckbox?.(item.value)}
+            name={name}
           />
         ))}
       </div>
