@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Title } from "./title";
 import { FilterCheckbox } from "./filter-checkbox";
 import { Input } from "../ui";
@@ -12,13 +12,29 @@ interface Props {
   className?: string;
 }
 
+interface PriceProps {
+  priceFrom: number;
+  priceTo: number;
+}
+
 export const Filters: React.FC<Props> = ({ className }) => {
   const { ingredients, loading, onAddId, selectedIds } = useFIlterIngredients();
+  const [prices, setPrice] = useState<PriceProps>({
+    priceFrom: 0,
+    priceTo: 1000,
+  });
 
   const items = ingredients.map((item) => ({
     value: String(item.id),
     text: item.name,
   }));
+
+  const updatePrice = (name: keyof PriceProps, value: number) => {
+    setPrice({
+      ...prices,
+      [name]: value,
+    });
+  };
 
   return (
     <div className={className}>
@@ -26,8 +42,8 @@ export const Filters: React.FC<Props> = ({ className }) => {
 
       {/* Верхні чекбокси */}
       <div className="flex flex-col gap-4">
-        <FilterCheckbox name='qwe' text="Можна зібрати" value="1" />
-        <FilterCheckbox name='asdf' text="Новинки" value="2" />
+        <FilterCheckbox name="qwe" text="Можна зібрати" value="1" />
+        <FilterCheckbox name="asdf" text="Новинки" value="2" />
       </div>
 
       {/* Фільтр цін */}
@@ -39,12 +55,28 @@ export const Filters: React.FC<Props> = ({ className }) => {
             placeholder="0"
             min={0}
             max={1000}
-            defaultValue={0}
+            value={String(prices.priceFrom)}
+            onChange={(e) => updatePrice("priceFrom", Number(e.target.value))}
           />
-          <Input type="number" placeholder="1000" min={100} max={1000} />
+          <Input
+            type="number"
+            placeholder="1000"
+            min={0}
+            max={1000}
+            value={String(prices.priceTo)}
+            onChange={(e) => updatePrice("priceTo", Number(e.target.value))}
+          />
         </div>
 
-        <RangeSlider min={0} max={1000} step={10} value={[0, 1000]} />
+        <RangeSlider
+          min={0}
+          max={1000}
+          step={10}
+          value={[prices.priceFrom, prices.priceTo]}
+          onValueChange={([priceFrom, priceTo]) =>
+            setPrice({ priceFrom, priceTo })
+          }
+        />
       </div>
 
       {/* Фільтр інгредієнти */}
