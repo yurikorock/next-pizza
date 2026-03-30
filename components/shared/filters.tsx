@@ -33,7 +33,7 @@ export const Filters: React.FC<Props> = ({ className }) => {
   >;
   const router = useRouter();
   const { ingredients, loading, onAddId, selectedIngredients } =
-    useFIlterIngredients();
+    useFIlterIngredients(searchParams.get("ingredients")?.split(","));
 
   const [sizes, { toggle: toggleSizes }] = useSet(
     new Set<string>(
