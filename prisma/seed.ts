@@ -61,7 +61,7 @@ async function up() {
     data: {
       name: "Пепероні фреш",
       imageUrl:
-        "https://media.dodostatic.net/image/r:233x233/11EE7D61304FAF5A98A6958F2BB2D260.webp",
+        "https://media.dodostatic.net/image/r:584x584/0198bf57bc517218ab93c762f4b0193e.avif",
       categoryId: 1,
       ingredients: {
         connect: ingredients.slice(0, 5),
@@ -72,7 +72,7 @@ async function up() {
     data: {
       name: "Сирна",
       imageUrl:
-        "https://media.dodostatic.net/image/r:233x233/11EE7D610CF7E265B7C72BE5AE757CA7.webp",
+        "https://media.dodostatic.net/image/r:584x584/019afa507ae371e8a6b99101e25132cc.avif",
       categoryId: 1,
       ingredients: {
         connect: ingredients.slice(5, 10),
