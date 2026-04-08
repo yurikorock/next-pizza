@@ -7,6 +7,7 @@ import React from "react";
 import { Title } from "../title";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { ChoosePizzaForm } from "../choose-pizza-form";
 
 interface Props {
   product: Product;
@@ -23,7 +24,7 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
           className,
         )}
       >
-        <Title text={product.name}/>
+       <ChoosePizzaForm imageUrl={product.imageUrl} name={product.name} ingredients={[]} />
       </DialogContent>
     </Dialog>
   );
