@@ -1,34 +1,36 @@
 import { cn } from "@/lib/utils";
 import React from "react";
+
 import { Title } from "./title";
 import { Button } from "../ui";
-import { PizzaImage } from "./pizza-image";
 
 interface Props {
   imageUrl: string;
   name: string;
-  ingredients: any[];
-  items?: any[];
   onClickAdd?: VoidFunction;
   className?: string;
 }
 
-export const ChoosePizzaForm: React.FC<Props> = ({
+export const ChooseProductForm: React.FC<Props> = ({
   name,
-  items,
   imageUrl,
-  ingredients,
   onClickAdd,
   className,
 }) => {
   const textDetails = "30см традиційне тісто 30";
   const totalPrice = 350;
-  const size = 30;
 
   return (
-    <div className={cn(className,"modal flex flex-1" )}>
-      
-      <PizzaImage imageUrl={imageUrl} size={size}/>
+    <div className={cn("modal flex flex-1", className)}>
+   
+
+      <div className="flex items-center justify-center flex-1 relative w-full">
+        <img
+          src={imageUrl}
+          alt={name}
+          className="relative left-2 top-2 transition-all z-10 duration-300 w-[350px] h-[350px]"
+        />
+      </div>
 
       <div className="w-[490px] bg-[#f7f6f5] p-7">
 
