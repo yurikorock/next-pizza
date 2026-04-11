@@ -10,7 +10,7 @@ import { CheckBoxFiltersGroup } from "./checkbox-filters-group";
 import { useSet } from "react-use";
 import qs from "qs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useFilters, useIngredients, useQueryFilters } from "@/hooks";
+import { useFilters, useIngredients, useQueryFilters } from "@/shared/hooks";
 
 interface Props {
   className?: string;
