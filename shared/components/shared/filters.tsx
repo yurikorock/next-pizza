@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Title } from "./title";
-import { FilterCheckbox } from "./filter-checkbox";
 import { Input } from "../ui";
 import { RangeSlider } from "./range-slider";
 import { CheckBoxFiltersGroup } from "./checkbox-filters-group";
 // import { useFIlterIngredients } from "@/hooks/useFilterIngredients";
-import { useSet } from "react-use";
-import qs from "qs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useFilters, useIngredients, useQueryFilters } from "@/shared/hooks";
 
 interface Props {
