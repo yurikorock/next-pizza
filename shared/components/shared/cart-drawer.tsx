@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Sheet,
@@ -17,6 +17,8 @@ import { Button } from "../ui";
 import { ArrowRight } from "lucide-react";
 import { CartDrawerItem } from "./cart-drawer-item";
 import { getCartItemDetails } from "@/shared/lib";
+import { useCartStore } from "@/shared/store";
+import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
 
 interface Props {
   className?: string;
@@ -26,6 +28,14 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
   children,
   className,
 }) => {
+  const totalAmount = useCartStore((state) => state.totalAmount);
+  const items = useCartStore((state) => state.items);
+  const fetchCartItems = useCartStore((state) => state.fetchCartItems);
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -36,71 +46,32 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
       >
         <SheetHeader>
           <SheetTitle>
-            В кошику <span className="font-bold">3 товара</span>
+            В кошику <span className="font-bold">{items.length} товара</span>
           </SheetTitle>
         </SheetHeader>
 
         <div className="+mx-6 mt-5 overflow-auto flex-1">
           <div className="mb-2">
-            <CartDrawerItem
-              id={1}
-              imageUrl={
-                "https://media.dodostatic.net/image/r:584x584/0198bf57bc517218ab93c762f4b0193e.avif"
-              }
-              details={getCartItemDetails(2, 30, [
-                {
-                  name: "chiken",
-                  id: 0,
-                  price: 0,
-                  imageUrl: "",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-                {
-                  name: "cheese",
-                  id: 0,
-                  price: 0,
-                  imageUrl: "",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-              ])}
-              name={"Chorizo fresh"}
-              price={419}
-              quantity={1}
-            />
+            {items.map((item) => (
+              <CartDrawerItem
+                key={item.id}
+                id={item.id}
+                imageUrl={item.imageUrl}
+                details={
+                  item.pizzaSize && item.pizzaType
+                    ? getCartItemDetails(
+                        item.ingredients,
+                        item.pizzaType as PizzaType,
+                        item.pizzaSize as PizzaSize,
+                      )
+                    : ""
+                }
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+              />
+            ))}
           </div>
-
-          <div className="mb-2">
-            <CartDrawerItem
-              id={1}
-              imageUrl={
-                "https://media.dodostatic.net/image/r:584x584/0198bf57bc517218ab93c762f4b0193e.avif"
-              }
-              details={getCartItemDetails(2, 30, [
-                {
-                  name: "chiken",
-                  id: 0,
-                  price: 0,
-                  imageUrl: "",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-                {
-                  name: "cheese",
-                  id: 0,
-                  price: 0,
-                  imageUrl: "",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-              ])}
-              name={"Chorizo fresh"}
-              price={419}
-              quantity={1}
-            />
-          </div>
-          
         </div>
 
         <SheetFooter className="+mx-6 bg-white p-8">
@@ -110,7 +81,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                 Всього
                 <div className="flex-1 border-b border-dashed border-b-neutral-200 relative top-1 mx-2" />
               </span>
-              <span className="font-bold text-lg">500grn</span>
+              <span className="font-bold text-lg">{totalAmount} грн</span>
             </div>
 
             <Link href="/cart">
