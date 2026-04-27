@@ -19,6 +19,7 @@ import { CartDrawerItem } from "./cart-drawer-item";
 import { getCartItemDetails } from "@/shared/lib";
 import { useCartStore } from "@/shared/store";
 import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
+import { updateItemQuantity } from "@/shared/services/cart";
 
 interface Props {
   className?: string;
@@ -31,10 +32,20 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
   const totalAmount = useCartStore((state) => state.totalAmount);
   const items = useCartStore((state) => state.items);
   const fetchCartItems = useCartStore((state) => state.fetchCartItems);
+  const updateQuantity = useCartStore((state) => state.updateItemQuantity);
 
   useEffect(() => {
     fetchCartItems();
   }, []);
+
+  const onCLickCountButton = (
+    id: number,
+    quantity: number,
+    type: "plus" | "minus",
+  ) => {
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+    updateQuantity(id, newQuantity);
+  };
 
   return (
     <Sheet>
@@ -69,6 +80,9 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({
                 name={item.name}
                 price={item.price}
                 quantity={item.quantity}
+                onCLickCountButton={(type) =>
+                  onCLickCountButton(item.id, item.quantity, type)
+                }
               />
             ))}
           </div>

@@ -3,8 +3,6 @@ import { getCartDetails } from "../lib";
 import { Api } from "../services/api-client";
 import { CartStateItem } from "../lib/get-cart-details";
 
-
-
 export interface CartState {
   loading: boolean;
   error: boolean;
@@ -34,7 +32,20 @@ export const useCartStore = create<CartState>((set, get) => ({
   fetchCartItems: async () => {
     try {
       set({ loading: true, error: false });
-      const data = await Api.cart.fetchCart();
+      const data = await Api.cart.getCart();
+      set(getCartDetails(data));
+    } catch (error) {
+      console.error(error);
+      set({ error: true });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  updateItemQuantity: async (id: number, quantity: number) => {
+    try {
+      set({ loading: true, error: false });
+      const data = await Api.cart.updateItemQuantity(id, quantity);
       set(getCartDetails(data));
     } catch (error) {
       console.error(error);
@@ -45,8 +56,6 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   removeCartItem: async (id: number) => {},
-
-  updateItemQuantity: async (id: number, quantity: number) => {},
 
   addCartItem: async (vaues: any) => {},
 }));
