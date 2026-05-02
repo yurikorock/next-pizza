@@ -8,18 +8,22 @@ import { Button } from "../ui";
 interface Props {
   imageUrl: string;
   name: string;
-  onClickAdd?: VoidFunction;
+  price: number;
+  onSubmit?: VoidFunction;
   className?: string;
 }
+
+//форма вибору продукта
 
 export const ChooseProductForm: React.FC<Props> = ({
   name,
   imageUrl,
-  onClickAdd,
+  price,
+  onSubmit,
   className,
 }) => {
-  const textDetails = "30см традиційне тісто 30";
-  const totalPrice = 350;
+  // const textDetails = "30см традиційне тісто 30";
+  // const totalPrice = 350;
 
   return (
     <div className={cn("modal flex flex-1", className)}>
@@ -37,12 +41,12 @@ export const ChooseProductForm: React.FC<Props> = ({
 
         <Title text={name} size="md" className="font-extrabold mb-1" />
 
-        <p className="text-gray-400">{textDetails}</p>
+        {/* <p className="text-gray-400">{textDetails}</p> */}
 
         
 
-        <Button className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-          Добавити в кошик за {totalPrice} грн
+        <Button onClick={onSubmit} className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
+          Добавити в кошик за {price} грн
         </Button>
 
       </div>

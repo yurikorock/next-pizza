@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { cn } from "@/shared/lib/utils";
 import React from "react";
@@ -17,16 +17,18 @@ interface Props {
   name: string;
   ingredients: Ingredient[];
   items: ProductItem[];
-  onClickAddCard?: VoidFunction;
+  onSubmit: (itemId: number, ingredients: number[]) => void;
   className?: string;
 }
+
+//форма вибору піци
 
 export const ChoosePizzaForm: React.FC<Props> = ({
   name,
   items,
   imageUrl,
   ingredients,
-  onClickAddCard,
+  onSubmit,
   className,
 }) => {
   const {
@@ -34,6 +36,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
     type,
     selectedIngredients,
     availableSizes,
+    currentItemId,
     setSize,
     setType,
     addIngredient,
@@ -48,12 +51,9 @@ export const ChoosePizzaForm: React.FC<Props> = ({
   );
 
   const handleClickAdd = () => {
-    onClickAddCard?.();
-    console.log({
-      size,
-      type,
-      ingredients: selectedIngredients,
-    });
+    if (currentItemId) {
+      onSubmit(currentItemId, Array.from(selectedIngredients));
+    }
   };
 
   return (
