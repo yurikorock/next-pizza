@@ -62,8 +62,8 @@ export async function POST(req: NextRequest) {
 
     const findCartItem = await prisma.cartItem.findFirst({
       where: {
-        // cartId: userCart.id,
-        cartId: 1,
+        cartId: userCart.id,
+
         productItemId: data.productItemId,
         ingredients: {
           every: {
