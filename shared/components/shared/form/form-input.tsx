@@ -1,12 +1,14 @@
 import React from "react";
-import { RequiredSymbol } from "../required-symbol";
-import { Input } from "../../ui/input";
-import { ErrorText } from "../error-text";
 
-interface Props {
+import { Input } from "../../ui/input";
+import { RequiredSymbol } from "../required-symbol";
+import { ErrorText } from "../error-text";
+import { ClearButton } from "../clear-button";
+
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
-  required: boolean;
+  required?: boolean;
   className?: string;
 }
 
@@ -17,9 +19,6 @@ export const FormInput: React.FC<Props> = ({
   className,
   ...props
 }) => {
-
-
-
   return (
     <div className={className}>
       {label && (
@@ -29,11 +28,12 @@ export const FormInput: React.FC<Props> = ({
       )}
 
       <div className="relative">
-        <Input className="h-12 text-md" {...props}/>
+        <Input className="h-12 text-md" {...props} />
+
+        <ClearButton />
       </div>
 
-
-      <ErrorText text="Поле обов`язкове" className="mt-2"/>
+      <ErrorText text="Поле обов`язкове" className="mt-2" />
     </div>
   );
 };
