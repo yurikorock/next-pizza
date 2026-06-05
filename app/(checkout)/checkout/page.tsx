@@ -15,7 +15,7 @@ import {
 import {
   checkoutFormSchema,
   CheckoutFormValues,
-} from "@/shared/components/shared/checkout/checkout-form-schema";
+} from "@/shared/constants/checkout-form-schema";
 
 export default function CheckoutPage({
   children,
