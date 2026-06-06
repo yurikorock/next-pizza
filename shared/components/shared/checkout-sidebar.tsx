@@ -2,7 +2,7 @@ import React from "react";
 import { WhiteBlock } from "./white-block";
 import { CheckoutItemDetails } from "./checkout-item-details";
 import { ArrowRight, Package, Percent, Truck } from "lucide-react";
-import { Button } from "../ui";
+import { Button, Skeleton } from "../ui";
 import { cn } from "@/shared/lib/utils";
 
 const VAT = 15;
@@ -10,11 +10,13 @@ const DELIVERY_PRICE = 250;
 
 interface Props {
   totalAmount: number;
+  loading?: boolean;
   className?: string;
 }
 
 export const CheckoutSidebar: React.FC<Props> = ({
   totalAmount,
+  loading,
   className,
 }) => {
   const vatPrice = (totalAmount * VAT) / 100;
@@ -24,7 +26,11 @@ export const CheckoutSidebar: React.FC<Props> = ({
     <WhiteBlock className={cn("p-6 sticky top-4", className)}>
       <div className="flex flex-col gap-1">
         <span className="text-xl">Всього:</span>
-        <span className="text-[34px] font-extrabold">{totalPrice}</span>
+        {loading ? (
+          <Skeleton className="w-48 h-11" />
+        ) : (
+          <span className="h-11 text-[34px] font-extrabold">{totalPrice}</span>
+        )}
       </div>
 
       <CheckoutItemDetails
@@ -34,7 +40,7 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Вартість кошика:
           </div>
         }
-        value={`${totalAmount} грн`}
+        value={loading ? <Skeleton className="w-16 h-6 rounded-[6px]" /> : `${totalAmount} грн`}
       />
       <CheckoutItemDetails
         title={
@@ -43,7 +49,7 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Податок:
           </div>
         }
-        value={`${vatPrice} грн`}
+        value={loading ? <Skeleton className="w-16 h-6 rounded-[6px]" /> : `${vatPrice} грн`}
       />
       <CheckoutItemDetails
         title={
@@ -52,7 +58,7 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Доставка:
           </div>
         }
-        value={`${DELIVERY_PRICE} грн`}
+        value={loading ? <Skeleton className="w-16 h-6 rounded-[6px]" /> : `${DELIVERY_PRICE} грн`}
       />
       <Button
         type="submit"

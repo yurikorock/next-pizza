@@ -17,6 +17,7 @@ import {
   CheckoutFormValues,
 } from "@/shared/constants/checkout-form-schema";
 
+
 export default function CheckoutPage({
   children,
 }: {
@@ -67,16 +68,17 @@ export default function CheckoutPage({
               onCLickCountButton={onCLickCountButton}
               removeCartItem={removeCartItem}
               items={items}
+              loading={loading}
             />
 
-            <CheckoutPersonalForm />
+            <CheckoutPersonalForm className={loading ? 'opacity-40 pointer-events-none' : ''}/>
 
-            <CheckoutAddressForm />
+            <CheckoutAddressForm className={loading ? 'opacity-40 pointer-events-none' : ''}/>
           </div>
 
           {/* {Right side} */}
           <div className="w-[450px]">
-            <CheckoutSidebar totalAmount={totalAmount} />
+            <CheckoutSidebar totalAmount={totalAmount} loading={loading} />
           </div>
         </div>
       </form>

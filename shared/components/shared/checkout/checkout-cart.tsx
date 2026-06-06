@@ -4,6 +4,8 @@ import { CheckoutItem } from "../checkout-item";
 import { getCartItemDetails } from "@/shared/lib";
 import { PizzaSize, PizzaType } from "@/shared/constants/pizza";
 import { CartStateItem } from "@/shared/lib/get-cart-details";
+import { Skeleton } from "../../ui";
+import { CheckoutItemSkeleton } from "../checkout-item-skeleton";
 
 interface Props {
   items: CartStateItem[];
@@ -13,6 +15,7 @@ interface Props {
     type: "plus" | "minus",
   ) => void;
   removeCartItem: (id: number) => void;
+  loading: boolean;
   className?: string;
 }
 
@@ -20,31 +23,36 @@ export const CheckoutCart: React.FC<Props> = ({
   items,
   onCLickCountButton,
   removeCartItem,
+  loading,
   className,
 }) => {
   return (
     <WhiteBlock title="1. Кошик" className={className}>
       <div className="flex flex-col gap-5">
-        {items.map((item) => (
-          <CheckoutItem
-            key={item.id}
-            id={item.id}
-            imageUrl={item.imageUrl}
-            details={getCartItemDetails(
-              item.ingredients,
-              item.pizzaType as PizzaType,
-              item.pizzaSize as PizzaSize,
-            )}
-            name={item.name}
-            price={item.price}
-            quantity={item.quantity}
-            disabled={item.disabled}
-            onCLickCountButton={(type) =>
-              onCLickCountButton(item.id, item.quantity, type)
-            }
-            onCLickRemove={() => removeCartItem(item.id)}
-          />
-        ))}
+        {loading
+          ? [...Array(4)].map((_, index) => (
+              <CheckoutItemSkeleton key={index} />
+            ))
+          : items.map((item) => (
+              <CheckoutItem
+                key={item.id}
+                id={item.id}
+                imageUrl={item.imageUrl}
+                details={getCartItemDetails(
+                  item.ingredients,
+                  item.pizzaType as PizzaType,
+                  item.pizzaSize as PizzaSize,
+                )}
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+                disabled={item.disabled}
+                onCLickCountButton={(type) =>
+                  onCLickCountButton(item.id, item.quantity, type)
+                }
+                onCLickRemove={() => removeCartItem(item.id)}
+              />
+            ))}
       </div>
     </WhiteBlock>
   );
