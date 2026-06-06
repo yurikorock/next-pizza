@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
+import Script from "next/script";
 
 const nunito = Nunito({
   subsets: ["cyrillic"],
@@ -19,7 +20,10 @@ export default function DashboardLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        
+        </body>
     </html>
   );
 }
