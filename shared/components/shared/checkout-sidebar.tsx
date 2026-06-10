@@ -11,6 +11,7 @@ const DELIVERY_PRICE = 250;
 interface Props {
   totalAmount: number;
   loading?: boolean;
+
   className?: string;
 }
 
@@ -40,7 +41,13 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Вартість кошика:
           </div>
         }
-        value={loading ? <Skeleton className="w-16 h-6 rounded-[6px]" /> : `${totalAmount} грн`}
+        value={
+          loading ? (
+            <Skeleton className="w-16 h-6 rounded-[6px]" />
+          ) : (
+            `${totalAmount} грн`
+          )
+        }
       />
       <CheckoutItemDetails
         title={
@@ -49,7 +56,13 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Податок:
           </div>
         }
-        value={loading ? <Skeleton className="w-16 h-6 rounded-[6px]" /> : `${vatPrice} грн`}
+        value={
+          loading ? (
+            <Skeleton className="w-16 h-6 rounded-[6px]" />
+          ) : (
+            `${vatPrice} грн`
+          )
+        }
       />
       <CheckoutItemDetails
         title={
@@ -58,9 +71,16 @@ export const CheckoutSidebar: React.FC<Props> = ({
             Доставка:
           </div>
         }
-        value={loading ? <Skeleton className="w-16 h-6 rounded-[6px]" /> : `${DELIVERY_PRICE} грн`}
+        value={
+          loading ? (
+            <Skeleton className="w-16 h-6 rounded-[6px]" />
+          ) : (
+            `${DELIVERY_PRICE} грн`
+          )
+        }
       />
       <Button
+        loading={loading}
         type="submit"
         className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
       >

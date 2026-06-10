@@ -16,13 +16,16 @@ import {
   checkoutFormSchema,
   CheckoutFormValues,
 } from "@/shared/constants/checkout-form-schema";
-
+import { createOrder } from "@/app/actions";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 export default function CheckoutPage({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [submitting, setSubmitting] = useState(false);
   const { totalAmount, items, loading, updateItemQuantity, removeCartItem } =
     useCart();
 
@@ -38,10 +41,23 @@ export default function CheckoutPage({
     },
   });
 
-  const onSubmit = (data: CheckoutFormValues)=> {
-    console.log(data)
-  }
+  const onSubmit = async (data: CheckoutFormValues) => {
+    try {
+      setSubmitting(true);
+      const url = await createOrder(data);
+      toast.error("Заказ успішно оформлено! 📝 Перехід на оплату... ", {
+        icon: "✅",
+      });
 
+      if (url) {
+        location.href = url;
+      }
+    } catch (error) {
+      console.log(error);
+      setSubmitting(false);
+      toast.error("Не вийшло створити замовлення", { icon: "❌" });
+    } 
+  };
 
   const onCLickCountButton = (
     id: number,
@@ -60,28 +76,35 @@ export default function CheckoutPage({
       />
 
       <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex gap-10">
-          {/* {Left side} */}
-          <div className="flex flex-col gap-10 flex-1 mb-20">
-            <CheckoutCart
-              onCLickCountButton={onCLickCountButton}
-              removeCartItem={removeCartItem}
-              items={items}
-              loading={loading}
-            />
+            {/* {Left side} */}
+            <div className="flex flex-col gap-10 flex-1 mb-20">
+              <CheckoutCart
+                onCLickCountButton={onCLickCountButton}
+                removeCartItem={removeCartItem}
+                items={items}
+                loading={loading}
+              />
 
-            <CheckoutPersonalForm className={loading ? 'opacity-40 pointer-events-none' : ''}/>
+              <CheckoutPersonalForm
+                className={loading ? "opacity-40 pointer-events-none" : ""}
+              />
 
-            <CheckoutAddressForm className={loading ? 'opacity-40 pointer-events-none' : ''}/>
+              <CheckoutAddressForm
+                className={loading ? "opacity-40 pointer-events-none" : ""}
+              />
+            </div>
+
+            {/* {Right side} */}
+            <div className="w-[450px]">
+              <CheckoutSidebar
+                totalAmount={totalAmount}
+                loading={loading || submitting}
+              />
+            </div>
           </div>
-
-          {/* {Right side} */}
-          <div className="w-[450px]">
-            <CheckoutSidebar totalAmount={totalAmount} loading={loading} />
-          </div>
-        </div>
-      </form>
+        </form>
       </FormProvider>
     </Container>
   );

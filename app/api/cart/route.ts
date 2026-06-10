@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(userCart);
+    return NextResponse.json(userCart ?? { totalAmount: 0, items: [] }); //add
   } catch (error) {
     console.log("[CART_GET] Server error", error);
     return NextResponse.json(
