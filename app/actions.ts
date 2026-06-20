@@ -2,6 +2,7 @@
 
 import { prisma } from "@/prisma/prisma-client";
 import { CheckoutFormValues } from "@/shared/constants/checkout-form-schema";
+import { sendEmail } from "@/shared/lib";
 import { OrderStatus } from "@prisma/client";
 import { cookies } from "next/headers";
 import { email } from "zod";
@@ -72,12 +73,12 @@ export async function createOrder(data: CheckoutFormValues) {
     await prisma.cartItem.deleteMany({
       where: {
         cartId: userCart.id,
-      }
-    })
+      },
+    });
 
-    //зробити посилання на оплату
+    //TODO зробити посилання на оплату
 
-    
+    sendEmail(data.email, 'Next Pizza / Оплатіть замовлення №' + order.id);
   } catch (error) {}
 
   return "https://www.google.com/webhp?hl=ru&sa=X&ved=0ahUKEwibj-Siuv2UAxU5QlUIHffTGcYQPAgI";
