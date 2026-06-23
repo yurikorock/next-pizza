@@ -1,3 +1,5 @@
+import { PayOrderTemplate } from "./email-templates";
+
 export { Container } from "./container";
 export { Header } from "./header";
 export { Title } from "./title";
@@ -23,8 +25,10 @@ export {ErrorText} from './error-text'
 export {RequiredSymbol} from './required-symbol'
 export {ClearButton} from  './clear-button'
 
+
 export * from './form'
 export * from './modals'
+export * from './email-templates'
 
 
 

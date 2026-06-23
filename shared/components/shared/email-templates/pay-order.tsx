@@ -6,16 +6,12 @@ interface Props {
   paymentUrl: string;
 }
 
-export function PayOrderTemplate({
-  orderId,
-  totalAmount,
-  paymentUrl,
-}: Props) {
+export function PayOrderTemplate({ orderId, totalAmount, paymentUrl }: Props) {
   return (
     <div>
       <h1>Замовлення №{orderId}</h1>
       <p>
-        Оплатити замовлення на суму {totalAmount} грн. Перейдіть за
+        Оплатити замовлення на суму <b>{totalAmount} грн.</b> Перейдіть за
         <a href={paymentUrl}>цим посиланням</a> для оплати замовлення
       </p>
     </div>
