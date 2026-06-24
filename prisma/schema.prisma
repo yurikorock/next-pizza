@@ -126,6 +126,8 @@ model Order {
     status      OrderStatus 
     paymentId   String?
 
+    paymentForm WayForPayPaymentForm?
+
     items Json
 
     fullName String
@@ -147,6 +149,21 @@ model VerificationCode {
     code String
 
     createdAt DateTime @default(now())
+}
+
+
+model WayForPayPaymentForm {
+    id Int @id @default(autoincrement())
+
+    order   Order @relation(fields: [orderId], references: [id])
+    orderId Int   @unique
+
+    orderReference String @unique
+
+    fields Json
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 enum OrderStatus {

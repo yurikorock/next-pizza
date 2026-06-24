@@ -4,12 +4,14 @@ import { prisma } from "@/prisma/prisma-client";
 import { PayOrderTemplate } from "@/shared/components/shared";
 import { CheckoutFormValues } from "@/shared/constants/checkout-form-schema";
 import { sendEmail } from "@/shared/lib";
+import { createPayment } from "@/shared/lib/create-payment";
 import { OrderStatus } from "@prisma/client";
 import { cookies } from "next/headers";
-import { email } from "zod";
+
 
 export async function createOrder(data: CheckoutFormValues) {
   console.log(data);
+  let paymentLink = "";
   try {
     const cookieStore = cookies();
     const cartToken = (await cookieStore).get("cartToken")?.value;
@@ -77,7 +79,16 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     });
 
-    //TODO зробити посилання на оплату
+    //посилання на оплату
+
+    const { paymentLink: link } = await createPayment({
+      orderId: order.id,
+      amount: order.totalAmount,
+      description: `Замовлення №${order.id}`,
+      clientEmail: data.email,
+    });
+
+    paymentLink = link;
 
     await sendEmail(
       data.email,
@@ -85,14 +96,12 @@ export async function createOrder(data: CheckoutFormValues) {
       PayOrderTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: "https://resend.com/docs/send-with-nextjs",
+        paymentUrl: paymentLink,
       }),
     );
-
-    
   } catch (error) {
     console.log("[CreateOrder] Server error", error);
   }
 
-  return "https://www.google.com/webhp?hl=ru&sa=X&ved=0ahUKEwibj-Siuv2UAxU5QlUIHffTGcYQPAgI";
+  return paymentLink;
 }
