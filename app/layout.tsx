@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Script from "next/script";
-
+import { Providers } from "@/shared/components/shared/providers";
 
 const nunito = Nunito({
   subsets: ["cyrillic"],
@@ -22,13 +22,13 @@ export default function RootLayout({
         <link data-rh="true" rel="icon" href="../public/logo.png" />
       </head>
       <body className={nunito.variable}>
-        {children}
+        <Providers> {children}</Providers>
+
         <Script
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`}
           strategy="beforeInteractive"
         />
-        <Toaster/>
-        </body>
+      </body>
     </html>
   );
 }
