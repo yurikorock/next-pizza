@@ -1,3 +1,5 @@
+'use client'
+
 import React from "react";
 import { cn } from "@/shared/lib/utils";
 import { Container } from "./container";
@@ -7,14 +9,23 @@ import { ArrowBigRight, ArrowRight, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { SearchInput } from "./search-input";
 import { CartButton } from "./cart-button";
+import { useSession, signIn } from "next-auth/react";
+import { ProfileButton } from "./profile-button";
 
 interface Props {
   hasSearch?: boolean;
-  hasCart?:boolean;
+  hasCart?: boolean;
   className?: string;
 }
 
-export const Header: React.FC<Props> = ({ hasSearch = true,hasCart=true, className }) => {
+export const Header: React.FC<Props> = ({
+  hasSearch = true,
+  hasCart = true,
+  className,
+}) => {
+  
+
+
   return (
     <header className={cn("border-b", className)}>
       <Container className="flex items-center justify-between py-8">
@@ -39,12 +50,9 @@ export const Header: React.FC<Props> = ({ hasSearch = true,hasCart=true, classNa
 
         {/* Права частина */}
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="flex items-center gap-1">
-            <User size={16} />
-            Увійти
-          </Button>
+        <ProfileButton/>
 
-         {hasCart &&( <CartButton />)}
+          {hasCart && <CartButton />}
         </div>
       </Container>
     </header>
