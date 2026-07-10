@@ -1,7 +1,11 @@
+'use client'
+
 import { Button, Dialog } from "@/shared/components/ui";
 import { DialogContent, DialogTitle } from "@/shared/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { LoginForm } from "./forms/login-form";
 
 interface Props {
   open: boolean;
@@ -9,6 +13,12 @@ interface Props {
 }
 
 export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
+  const [type, setType] = useState<"login" | "register">("login");
+
+  const onSwitchType = () => {
+    setType(type === "login" ? "register" : "login");
+  };
+
   const handleClose = () => {
     onClose();
   };
@@ -19,11 +29,15 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
         <VisuallyHidden>
           <DialogTitle>Авторизація</DialogTitle>
         </VisuallyHidden>
-        FORM
+
+        {type === "login" ? (
+          <LoginForm onClose={handleClose} />
+        ) : (
+          <h1>REGISTER</h1>
+        )}
+
         <hr />
         <div className="flex gap-2">
-
-
           <Button
             variant="secondary"
             onClick={() =>
@@ -45,22 +59,30 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
           <Button
             variant="secondary"
             onClick={() =>
-              signIn('google', {
-                callbackUrl: '/',
+              signIn("google", {
+                callbackUrl: "/",
                 redirect: true,
               })
             }
             type="button"
-            className="gap-2 h-12 p-2 flex-1">
+            className="gap-2 h-12 p-2 flex-1"
+          >
             <img
               className="w-6 h-6"
               src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
             />
             Google
           </Button>
-
-
         </div>
+
+        <Button
+          variant="outline"
+          onClick={onSwitchType}
+          type="button"
+          className="h-12"
+        >
+          {type !== "login" ? "Увійти" : "Реєстрація"}
+        </Button>
       </DialogContent>
     </Dialog>
   );
