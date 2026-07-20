@@ -1,17 +1,16 @@
-'use client'
+"use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "@/shared/lib/utils";
 import { Container } from "./container";
 import Image from "next/image";
-import { Button } from "../ui";
-import { ArrowBigRight, ArrowRight, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { SearchInput } from "./search-input";
 import { CartButton } from "./cart-button";
-import { useSession, signIn } from "next-auth/react";
 import { ProfileButton } from "./profile-button";
 import { AuthModal } from "./modals";
+import { useSearchParams, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface Props {
   hasSearch?: boolean;
@@ -24,8 +23,29 @@ export const Header: React.FC<Props> = ({
   hasCart = true,
   className,
 }) => {
+  const router = useRouter();
   const [openAuthModal, setOpenAuthModal] = useState(false);
 
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    let toastMessage = "";
+
+    if (searchParams.has("paid")) {
+      toastMessage = "Замовлення успішно оплачене! Деталі відправлені на пошту";
+    }
+
+    if (searchParams.has("verified")) {
+      toastMessage = "Пошта успішно підтверджена!";
+    }
+
+    if (toastMessage) {
+      setTimeout(() => {
+        router.replace("/");
+        toast.success(toastMessage, { duration: 3000 });
+      }, 1000);
+    }
+  }, []);
 
   return (
     <header className={cn("border-b", className)}>
@@ -51,9 +71,12 @@ export const Header: React.FC<Props> = ({
 
         {/* Права частина */}
         <div className="flex items-center gap-2">
-          <AuthModal open={openAuthModal} onClose={()=>setOpenAuthModal(false)}/>
-            
-        <ProfileButton onClickSignIn={()=> setOpenAuthModal(true)}/>
+          <AuthModal
+            open={openAuthModal}
+            onClose={() => setOpenAuthModal(false)}
+          />
+
+          <ProfileButton onClickSignIn={() => setOpenAuthModal(true)} />
 
           {hasCart && <CartButton />}
         </div>
