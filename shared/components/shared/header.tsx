@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { cn } from "@/shared/lib/utils";
 import { Container } from "./container";
 import Image from "next/image";
@@ -12,20 +12,8 @@ import { AuthModal } from "./modals";
 import { useSearchParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-interface Props {
-  hasSearch?: boolean;
-  hasCart?: boolean;
-  className?: string;
-}
-
-export const Header: React.FC<Props> = ({
-  hasSearch = true,
-  hasCart = true,
-  className,
-}) => {
+function HeaderNotifications() {
   const router = useRouter();
-  const [openAuthModal, setOpenAuthModal] = useState(false);
-
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -47,8 +35,28 @@ export const Header: React.FC<Props> = ({
     }
   }, []);
 
+  return null; // нічого не рендерить, тільки логіка
+}
+
+interface Props {
+  hasSearch?: boolean;
+  hasCart?: boolean;
+  className?: string;
+}
+
+export const Header: React.FC<Props> = ({
+  hasSearch = true,
+  hasCart = true,
+  className,
+}) => {
+  const [openAuthModal, setOpenAuthModal] = useState(false);
+
   return (
     <header className={cn("border-b", className)}>
+      <Suspense fallback={null}>
+        <HeaderNotifications />
+      </Suspense>
+
       <Container className="flex items-center justify-between py-8">
         {/* Ліва частина */}
         <Link href="/">
